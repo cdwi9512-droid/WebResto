@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Models\Reservasi;
 use App\Models\Transaksi;
 use App\Models\DetailTransaksi;
@@ -9,30 +11,40 @@ class ReservasiController extends Controller
 {
     public function index()
     {
-        return view('reservasi.index');
+        $reservasi = Reservasi::all();
+        return view('reservasi.index', compact('reservasi'));
     }
 
-    public function proses(Request $request)
+    public function create()
     {
-        // 🔥 VALIDASI DULU BIAR AMAN
+        return view('reservasi.create');
+    }
+
+    public function store(Request $request)
+    {
         $request->validate([
-            'nama' => 'required',
+            'nama'         => 'required',
             'jumlah_orang' => 'required',
-            'tanggal' => 'required',
-            'jam' => 'required', // ➕ Ditambahkan
-            'no_telp' => 'required', // ➕ Nanti aku tambah input di view-nya
+            'tanggal'      => 'required',
+            'jam'          => 'required',
+            'no_telp'      => 'required'
         ]);
 
-        // 1. Simpan Data ke Tabel RESERVASI
+        Reservasi::create($request->all());
+        return redirect()->route('reservasi.index')->with('sukses', 'Reservasi berhasil ditambahkan!');
+    }
+
+    // Fungsi asli kamu tetap ada di sini (Proses Pesan dari Menu)
+    public function proses(Request $request)
+    {
         $reservasi = Reservasi::create([
             'nama'         => $request->nama,
             'jumlah_orang' => $request->jumlah_orang,
             'tanggal'      => $request->tanggal,
-            'jam'          => $request->jam,       // ✅ Ambil dari input
-            'no_telp'      => $request->no_telp,   // ✅ Ambil dari input
+            'jam'          => $request->jam,
+            'no_telp'      => $request->no_telp,
         ]);
 
-        // 2. Simpan Data ke Tabel TRANSAKSI
         $transaksi = Transaksi::create([
             'reservasi_id'     => $reservasi->id,
             'tanggal_pesan'    => date('Y-m-d H:i:s'),
@@ -41,14 +53,39 @@ class ReservasiController extends Controller
             'status'           => 'Belum Bayar',
         ]);
 
-        // 3. Simpan Data ke Tabel DETAIL_TRANSAKSI
         DetailTransaksi::create([
             'transaksi_id' => $transaksi->id,
             'menu_id'      => $request->menu_id,
             'jumlah'       => 1,
         ]);
 
-        // 4. PINDAH KE HALAMAN TRANSAKSI
         return redirect('/transaksi')->with('sukses', 'Pesanan berhasil dibuat!');
+    }
+
+    public function edit($id)
+    {
+        $reservasi = Reservasi::findOrFail($id);
+        return view('reservasi.edit', compact('reservasi'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama'         => 'required',
+            'jumlah_orang' => 'required',
+            'tanggal'      => 'required',
+            'jam'          => 'required',
+            'no_telp'      => 'required'
+        ]);
+
+        $reservasi = Reservasi::findOrFail($id);
+        $reservasi->update($request->all());
+        return redirect()->route('reservasi.index')->with('sukses', 'Reservasi berhasil diubah!');
+    }
+
+    public function destroy($id)
+    {
+        Reservasi::findOrFail($id)->delete();
+        return redirect()->route('reservasi.index')->with('sukses', 'Reservasi berhasil dihapus!');
     }
 }

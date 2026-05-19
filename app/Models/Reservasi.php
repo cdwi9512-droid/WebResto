@@ -8,12 +8,12 @@ class Reservasi extends Model
 {
     protected $table = 'reservasi';
 
-    // ✅ DAFTARKAN SEMUA KOLOM YANG KITA PAKAI
     protected $fillable = [
         'nama',
         'jumlah_orang',
         'tanggal',
-        'no_telp' // DIMASUKIN BIAR BOLEH DISIMPAN
+        'jam',
+        'no_telp'
     ];
 
     public function transaksis()

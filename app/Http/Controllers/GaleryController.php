@@ -2,24 +2,83 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Galery;
+use App\Models\Resto;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller; 
 
 class GaleryController extends Controller
 {
     public function index()
     {
-       
-        $photos = [
-            "https://i.pinimg.com/1200x/63/21/d0/6321d0df5fb73c71102ec4851af29b4f.jpg",
-            "https://i.pinimg.com/736x/f6/5a/a8/f65aa8190ace17bf2292c96efc659fb2.jpg",
-            "https://i.pinimg.com/736x/7c/18/a8/7c18a834b82addb7989d6b4837bdd69f.jpg",
-            "https://i.pinimg.com/736x/bd/b1/a5/bdb1a5662d60728d2c93d5adbf232446.jpg",
-            "https://i.pinimg.com/1200x/db/97/6a/db976ac343259a1beb87c25ecc118e69.jpg",
-            "https://i.pinimg.com/736x/08/c7/0d/08c70d473888e35bd1c4cd9d1d2983d7.jpg",
-        ];
+        // Ubah dari data array ke data Database
+        $galery = Galery::with('resto')->get();
+        return view('galery.index', compact('galery'));
+    }
 
-    
-        return view('galery.index', compact('photos'));
+    public function create()
+    {
+        $resto = Resto::all();
+        return view('galery.create', compact('resto'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'keterangan' => 'required',
+            'gambar'     => 'required|image|mimes:jpeg,png,jpg|max:2048'
+        ]);
+
+        $data = $request->all();
+
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $nama_file = time() . "_" . $file->getClientOriginalName();
+            $file->move(public_path('images/galery'), $nama_file);
+            $data['gambar'] = 'images/galery/' . $nama_file;
+        }
+
+        Galery::create($data);
+        return redirect()->route('galery.index')->with('sukses', 'Foto berhasil ditambahkan!');
+    }
+
+    public function edit($id)
+    {
+        $galery = Galery::findOrFail($id);
+        $resto = Resto::all();
+        return view('galery.edit', compact('galery', 'resto'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'keterangan' => 'required',
+            'gambar'     => 'image|mimes:jpeg,png,jpg|max:2048'
+        ]);
+
+        $galery = Galery::findOrFail($id);
+        $data = $request->all();
+
+        if ($request->hasFile('gambar')) {
+            if (file_exists(public_path($galery->gambar))) {
+                unlink(public_path($galery->gambar));
+            }
+            $file = $request->file('gambar');
+            $nama_file = time() . "_" . $file->getClientOriginalName();
+            $file->move(public_path('images/galery'), $nama_file);
+            $data['gambar'] = 'images/galery/' . $nama_file;
+        }
+
+        $galery->update($data);
+        return redirect()->route('galery.index')->with('sukses', 'Foto berhasil diubah!');
+    }
+
+    public function destroy($id)
+    {
+        $galery = Galery::findOrFail($id);
+        if (file_exists(public_path($galery->gambar))) {
+            unlink(public_path($galery->gambar));
+        }
+        $galery->delete();
+        return redirect()->route('galery.index')->with('sukses', 'Foto berhasil dihapus!');
     }
 }
