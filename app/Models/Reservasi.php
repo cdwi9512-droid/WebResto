@@ -13,7 +13,7 @@ class Reservasi extends Model
         'nama',
         'jumlah_orang',
         'tanggal',
-        'no_telp' // 👉 DIMASUKIN BIAR BOLEH DISIMPAN
+        'no_telp' // DIMASUKIN BIAR BOLEH DISIMPAN
     ];
 
     public function transaksis()
