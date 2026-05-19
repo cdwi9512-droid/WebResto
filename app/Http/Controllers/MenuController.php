@@ -1,15 +1,13 @@
 <?php
-
 namespace App\Http\Controllers;
-
-use App\Models\Menu; // WAJIB ADA INI, PEMANGGIL DATA
+use App\Models\Menu;
 
 class MenuController extends Controller
 {
     public function index()
     {
-        // KIRIM DATA $menu KE VIEW
-        $menu = Menu::all(); 
+        // Ambil data menu beserta data restorannya
+        $menu = Menu::with('resto')->get(); 
         return view('menu.index', compact('menu'));
     }
 }

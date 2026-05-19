@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Reservasi;
 use App\Models\Transaksi;
 use App\Models\DetailTransaksi;
@@ -11,17 +9,27 @@ class ReservasiController extends Controller
 {
     public function index()
     {
-        return view('Reservasi.index');
+        return view('reservasi.index');
     }
 
     public function proses(Request $request)
     {
-        // 🔥 KITA PAKSA ISI SEMUA YANG DIMINTA DATABASE BIAR DIA DIEM
+        // 🔥 VALIDASI DULU BIAR AMAN
+        $request->validate([
+            'nama' => 'required',
+            'jumlah_orang' => 'required',
+            'tanggal' => 'required',
+            'jam' => 'required', // ➕ Ditambahkan
+            'no_telp' => 'required', // ➕ Nanti aku tambah input di view-nya
+        ]);
+
+        // 1. Simpan Data ke Tabel RESERVASI
         $reservasi = Reservasi::create([
             'nama'         => $request->nama,
             'jumlah_orang' => $request->jumlah_orang,
             'tanggal'      => $request->tanggal,
-            'no_telp'      => '08123456789', // 👉 ISI PINDAH DULU ANGKA SEMBARANG, BIAR LOLOS
+            'jam'          => $request->jam,       // ✅ Ambil dari input
+            'no_telp'      => $request->no_telp,   // ✅ Ambil dari input
         ]);
 
         // 2. Simpan Data ke Tabel TRANSAKSI
