@@ -1,0 +1,13 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Galery extends Model
+{
+    public function resto()
+{
+    return $this->belongsTo(Resto::class);
+}
+}
