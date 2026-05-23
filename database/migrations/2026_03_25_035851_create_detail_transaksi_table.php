@@ -13,9 +13,20 @@ return new class extends Migration
     {
         Schema::create('detail_transaksi', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('transaksi_id')->constrained('transaksi')->onDelete('cascade');
-            $table->foreignId('menu_id')->constrained('menu')->onDelete('cascade');
-            $table->integer('jumlah');
+            // 🔗 Kunci Asing ke Tabel Transaksi
+            $table->foreignId('transaksi_id')
+                  ->constrained('transaksi')
+                  ->onDelete('cascade'); // Kalau Transaksi dihapus, rinciannya ikut terhapus
+            
+            // 🔗 Kunci Asing ke Tabel Menu
+            $table->foreignId('menu_id')
+                  ->constrained('menu')
+                  ->onDelete('cascade'); // Kalau Menu dihapus, rinciannya ikut terhapus
+            
+            // 📦 Data Tambahan
+            $table->integer('jumlah');       // Isi: Berapa porsi yang dipesan
+            $table->integer('sub_total');    // ⚠️ INI YANG DITAMBAHKAN: Harga x Jumlah
+            
             $table->timestamps();
         });
     }

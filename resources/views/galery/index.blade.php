@@ -16,8 +16,8 @@
 </style>
 
 <div class="text-center mb-5">
-    <h1 class="fw-bold text-danger">Gallery Resto 🍽️</h1>
-    <p class="text-secondary">Beberapa makanan favorit di restoran kami</p>
+    <h1 class="fw-bold text-danger">Gallery Resto </h1>
+    <p class="text-secondary">setiap sudut di rancang ntuk memberikan suasana yang nyaman</p>
     <a href="{{ route('galery.create') }}" class="btn btn-primary mt-2">+ Tambah Foto Baru</a>
 </div>
 

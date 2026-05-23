@@ -6,6 +6,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\GaleryController;
 use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\DetailTransaksiController;
 
 // HALAMAN UTAMA
 Route::get('/', function () {
@@ -27,3 +28,6 @@ Route::post('/reservasi/proses', [ReservasiController::class, 'proses'])->name('
 
 // FITUR CRUD TRANSAKSI
 Route::resource('transaksi', TransaksiController::class);
+
+// Taruh di antara route transaksi dan yang lain
+Route::resource('detail_transaksi', DetailTransaksiController::class);

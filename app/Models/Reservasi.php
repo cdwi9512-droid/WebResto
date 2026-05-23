@@ -15,9 +15,9 @@ class Reservasi extends Model
         'jam',
         'no_telp'
     ];
-
-    public function transaksis()
+    // ✅ RELASI ONE TO ONE: Satu Reservasi punya Satu Transaksi
+    public function transaksi()
     {
-        return $this->hasMany(Transaksi::class);
+    return $this->hasOne(Transaksi::class, 'reservasi_id');
     }
 }
