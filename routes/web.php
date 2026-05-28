@@ -7,27 +7,40 @@ use App\Http\Controllers\GaleryController;
 use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DetailTransaksiController;
+// ✅ TAMBAHKAN BARIS INI (Controller Login yang akan kita bikin)
+use App\Http\Controllers\LoginController;
 
-// HALAMAN UTAMA
+// ==================================================
+// ✅ BAGIAN 1: HALAMAN BEBAS ACCESS (TANPA LOGIN)
+// ==================================================
 Route::get('/', function () {
     return view('welcome');
 });
 
-// FITUR CRUD RESTO
-Route::resource('resto', RestoController::class);
+// RUTE UNTUK FITUR LOGIN & LOGOUT
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/proses-login', [LoginController::class, 'masuk'])->name('proses.login');
+Route::get('/logout', [LoginController::class, 'keluar'])->name('logout');
 
-// FITUR CRUD MENU
-Route::resource('menu', MenuController::class);
 
-// FITUR CRUD GALERY
-Route::resource('galery', GaleryController::class);
+// ==================================================
+// ✅ BAGIAN 2: HALAMAN TERKUNCI (WAJIB LOGIN DULU)
+// SEMUA FITUR CRUD KAMU MASUK KE DALAM SINI BIAR AMAN!
+// ==================================================
+Route::middleware(['login'])->group(function () {
 
-// FITUR CRUD RESERVASI + RUTE KHUSUS PROSES PESAN
-Route::resource('reservasi', ReservasiController::class);
-Route::post('/reservasi/proses', [ReservasiController::class, 'proses'])->name('reservasi.proses');
+    // HALAMAN UTAMA SETELAH BERHASIL LOGIN
+    Route::get('/dashboard', [LoginController::class, 'dashboard'])->name('dashboard');
 
-// FITUR CRUD TRANSAKSI
-Route::resource('transaksi', TransaksiController::class);
+    // --------------------------
+    // ✅ FITUR CRUD KAMU (SUDAH ADA, TETAP SAMA PERSIS)
+    // --------------------------
+    Route::resource('resto', RestoController::class);
+    Route::resource('menu', MenuController::class);
+    Route::resource('galery', GaleryController::class);
+    Route::resource('reservasi', ReservasiController::class);
+    Route::post('/reservasi/proses', [ReservasiController::class, 'proses'])->name('reservasi.proses');
+    Route::resource('transaksi', TransaksiController::class);
+    Route::resource('detail_transaksi', DetailTransaksiController::class);
 
-// Taruh di antara route transaksi dan yang lain
-Route::resource('detail_transaksi', DetailTransaksiController::class);
+});

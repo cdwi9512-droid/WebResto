@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Reservasi;
 use App\Models\Transaksi;
 use App\Models\DetailTransaksi;
+use App\Models\Menu; // ✅ WAJIB TAMBAH BARIS INI DI ATAS! Buat ambil harga menu
 use Illuminate\Http\Request;
 
 class ReservasiController extends Controller
@@ -53,10 +54,16 @@ class ReservasiController extends Controller
             'status'           => 'Belum Bayar',
         ]);
 
+        // ✅ ✅ ✅ BAGIAN INI YANG DIPERBAIKI / DITAMBAH ✅ ✅ ✅
+        // Ambil harga menu dari database, terus hitung sub totalnya
+        $harga_menu = Menu::find($request->menu_id)->harga;
+        $sub_total  = $harga_menu * 1; // 1 itu jumlah pesanannya
+
         DetailTransaksi::create([
             'transaksi_id' => $transaksi->id,
             'menu_id'      => $request->menu_id,
             'jumlah'       => 1,
+            'sub_total'    => $sub_total // ✅ INI DULU KURANG, SEKARANG UDAH ADA!
         ]);
 
         return redirect('/transaksi')->with('sukses', 'Pesanan berhasil dibuat!');

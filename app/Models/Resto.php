@@ -10,7 +10,7 @@ class Resto extends Model
 protected $table = 'resto';
 
     protected $fillable = [
-        'nama_resto', 'deskripsi', 'alamat', 'telepon'
+        'nama_resto', 'deskripsi', 'alamat', 'no'
     ];
 
     public function menus()

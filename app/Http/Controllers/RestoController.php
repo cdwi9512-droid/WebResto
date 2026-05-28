@@ -23,7 +23,7 @@ class RestoController extends Controller
         $request->validate([
             'nama_resto' => 'required',
             'alamat'     => 'required',
-            'telepon'    => 'required'
+            'no'    => 'required'
         ]);
 
         Resto::create($request->all());
@@ -41,7 +41,7 @@ class RestoController extends Controller
         $request->validate([
             'nama_resto' => 'required',
             'alamat'     => 'required',
-            'telepon'    => 'required'
+            'no'    => 'required'
         ]);
 
         $resto = Resto::findOrFail($id);

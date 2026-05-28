@@ -25,7 +25,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">No. Telepon</label>
-                <input type="text" name="telepon" class="form-control" required>
+                <input type="text" name="no" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-primary">Simpan Data</button>
         </form>
