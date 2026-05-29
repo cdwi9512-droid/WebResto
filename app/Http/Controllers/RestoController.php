@@ -22,6 +22,7 @@ class RestoController extends Controller
     {
         $request->validate([
             'nama_resto' => 'required',
+            'deskripsi' => 'required' ,
             'alamat'     => 'required',
             'no'    => 'required'
         ]);
@@ -40,6 +41,7 @@ class RestoController extends Controller
     {
         $request->validate([
             'nama_resto' => 'required',
+            'deskripsi' => 'required',
             'alamat'     => 'required',
             'no'    => 'required'
         ]);

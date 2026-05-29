@@ -18,23 +18,26 @@ class Transaksi extends Model
 
     // ✅ RELASI ONE TO ONE
     // Artinya: Transaksi ini milik ONE data Reservasi saja
-    public function reservasi()
-    {
-        // Tambahkan 'reservasi_id' biar jelas kuncinya, walau tanpa ini juga biasanya jalan
-        return $this->belongsTo(Reservasi::class, 'reservasi_id');
-    }
-
-    // ✅ RELASI MANY TO MANY (LEWAT TABEL detail_transaksi)
-    public function menus()
-    {
-        return $this->belongsToMany(
-            Menu::class,
-            'detail_transaksi', // Nama tabel penghubung
-            'transaksi_id',      // Kunci dari tabel ini
-            'menu_id'            // Kunci dari tabel Menu
-        )
-        // ✅ TAMBAHKAN 'sub_total' DI SINI!
-        // Dulu cuma 'jumlah', tapi kan kita nambah kolom 'sub_total' di database
-        ->withPivot('jumlah', 'sub_total'); 
-    }
+   public function reservasi()
+{
+    return $this->belongsTo(Reservasi::class, 'reservasi_id');
 }
+
+public function menus()
+{
+    return $this->belongsToMany(
+        Menu::class,
+        'detail_transaksi',
+        'transaksi_id',
+        'menu_id'
+    )
+    ->withPivot('jumlah', 'sub_total'); 
+    // ⬆️ BAGIAN PIVOT ITU HANYA BOLEH ADA DI SINI, DI FUNGSI menus() SAJA
+}
+
+// ✅ FUNGSI BARU INI YANG DIPERBAIKI, JANGAN ADA TULISAN PIVOT DI SINI
+public function detail_transaksi()
+{
+    return $this->hasMany(DetailTransaksi::class, 'transaksi_id');
+    // ✅ UDAH CUMA SEGINI AJA, GAK USAH ADA TAMBAHAN APA-APA LAGI DI BAWAHNYA
+}}

@@ -43,4 +43,10 @@ Route::middleware(['login'])->group(function () {
     Route::resource('transaksi', TransaksiController::class);
     Route::resource('detail_transaksi', DetailTransaksiController::class);
 
+
+   // ✅ RUTE BARU KITA - AMAN, GAK BENTROK LAGI
+    Route::get('/pesan-sekarang', function () {
+        return view('reservasi.pesan');
+    })->name('pesan.sekarang');
+
 });

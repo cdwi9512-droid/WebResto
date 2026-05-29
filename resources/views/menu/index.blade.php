@@ -22,7 +22,7 @@
                 <h4>{{ $item->nama_menu }}</h4>
                 <p class="text-secondary">{{ $item->deskripsi }}</p>
                 <h5 class="text-danger">Rp {{ number_format($item->harga, 0, ',', '.') }}</h5>
-                <a href="/reservasi?menu_id={{ $item->id }}&harga={{ $item->harga }}" class="btn btn-dark w-100 mb-2">Pesan Sekarang</a>
+                <a href="/pesan-sekarang?menu_id={{ $item->id }}&harga={{ $item->harga }}" class="btn btn-dark w-100">Pesan Sekarang</a>
                 
                 {{-- TOMBOL EDIT & HAPUS --}}
                 <div class="d-flex justify-content-between">

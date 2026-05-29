@@ -8,10 +8,11 @@ use Illuminate\Http\Request;
 class TransaksiController extends Controller
 {
     public function index()
-    {
-        $transaksi = Transaksi::with(['menus', 'reservasi'])->get();
-        return view('transaksi.index', compact('transaksi'));
-    }
+{
+    // ➕➕ TAMBAHKAN 'detail_transaksi' DI SINI ➕➕
+    $transaksi = Transaksi::with(['reservasi', 'detail_transaksi', 'detail_transaksi.menu'])->get();
+    return view('transaksi.index', compact('transaksi'));
+}
 
     public function edit($id)
     {

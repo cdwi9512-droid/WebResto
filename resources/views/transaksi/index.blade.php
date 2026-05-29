@@ -23,27 +23,32 @@
                         <th>Jumlah</th>
                         <th>Harga</th>
                     </tr>
-                    @foreach ($item->menus as $menu)
-                    <tr>
-                        <td>{{ $menu->nama_menu }}</td>
-                        <td>{{ $menu->pivot->jumlah }}</td>
-                        <td>Rp {{ number_format($menu->harga * $menu->pivot->jumlah, 0, ',', '.') }}</td>
-                    </tr>
+                    {{-- ✅ KODE INI UDAH BENER, AKU TINGGALIN --}}
+                    @foreach ($item->detail_transaksi as $detail)
+                        <tr>
+                            <td>{{ $detail->menu->nama_menu }}</td> 
+                            {{-- ✅ TAMBAHKAN KATA "Porsi" BIAR JELAS --}}
+                            <td><strong>{{ $detail->jumlah }}</strong> Porsi</td>           
+                            <td>Rp {{ number_format($detail->sub_total, 0, ',', '.') }}</td> 
+                        </tr>
                     @endforeach
                 </table>
                 <hr>
                 <div class="d-flex justify-content-between">
                     <h4>Total Bayar</h4>
-                    <h4 class="text-success">Rp {{ number_format($item->total, 0, ',', '.') }}</h4>
+                    {{-- ✅ BAGIAN INI YANG DIPERBAIKI: HITUNG OTOMATIS JUMLAH SEMUA SUB TOTAL --}}
+                    @php
+                        // Rumus ajaib: Jumlahkan semua harga dari detail pesanan di atas
+                        $total_semua = $item->detail_transaksi->sum('sub_total');
+                    @endphp
+                    <h4 class="text-success">Rp {{ number_format($total_semua, 0, ',', '.') }}</h4>
                 </div>
                 <div class="mt-3 p-2 bg-light rounded">
                     <p class="mb-1"><strong>Nama Pemesan:</strong> {{ $item->reservasi->nama ?? 'Tidak ada data' }}</p>
                     <p class="mb-1"><strong>Tanggal Pesan:</strong> {{ $item->tanggal_pesan }}</p>
                     <p class="mb-1"><strong>Metode Bayar:</strong> {{ $item->metode_pembayaran }}</p>
                 </div>
-                <div class="mt-4 d-flex
-
-                                <div class="mt-4 d-flex justify-content-between align-items-center">
+                <div class="mt-4 d-flex justify-content-between align-items-center">
                     <div>
                         <label class="form-label d-block">Status Pembayaran</label>
                         @if($item->status == 'Lunas')

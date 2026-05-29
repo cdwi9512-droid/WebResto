@@ -47,8 +47,9 @@
     <thead class="table-dark">
         <tr>
             <th>Nama Resto</th>
+            <th>deskripsi</th>
             <th>Alamat</th>
-            <th>Telepon</th>
+            <th>no</th>
             <th>Aksi</th>
         </tr>
     </thead>
@@ -56,8 +57,9 @@
         @foreach($resto as $data)
         <tr>
             <td>{{ $data->nama_resto }}</td>
+            <td>{{ $data->deskripsi}}</td>
             <td>{{ $data->alamat }}</td>
-            <td>{{ $data->telepon }}</td>
+            <td>{{ $data->no }}</td>
             <td>
                 <a href="{{ route('resto.edit', $data->id) }}" class="btn btn-sm btn-warning">Edit</a>
                 <form action="{{ route('resto.destroy', $data->id) }}" method="POST" class="d-inline">
