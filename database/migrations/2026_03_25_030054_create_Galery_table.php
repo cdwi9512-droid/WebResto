@@ -6,25 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('Galery', function (Blueprint $table) {
-            $table->id();
-            $table->string('gambar');
-            $table->text('ketearangan');
-            $table->foreignId('resto_id')->constrained('resto')->onDelete('cascade');
-            $table->timestamps();
-        });
+        // ✅ Ini yang dibenerin tanda ! dan spasinya
+        if (!Schema::hasTable('galery')) { 
+            Schema::create('galery', function (Blueprint $table) {
+                $table->id();
+                $table->string('gambar');
+                $table->text('keterangan'); // ✅ Ini tadi salah ketik, udah dibenerin
+                // ✅ Ini dibenerin: tambah huruf s jadi 'restos'
+                $table->foreignId('resto_id')->constrained('restos')->onDelete('cascade');
+                $table->timestamps();
+            });
+        }
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('Galery');
+        Schema::dropIfExists('galery');
     }
 };

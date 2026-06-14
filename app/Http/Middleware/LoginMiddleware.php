@@ -15,8 +15,7 @@ class LoginMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Logika Cek Login (INI YANG PENTING SESUAI MODUL)
-        // Kalau di sesi TIDAK ADA data 'id' (artinya belum login)
+        
         if (!$request->session()->has('id')) {
             // Lempar balik ke halaman login
             return redirect('/login')->with('pesan', 'Kamu harus login dulu!');

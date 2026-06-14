@@ -24,4 +24,5 @@ class Menu extends Model
             'detail_transaksi'
         )->withPivot('jumlah');
     }
+
 }

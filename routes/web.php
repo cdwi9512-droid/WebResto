@@ -7,8 +7,8 @@ use App\Http\Controllers\GaleryController;
 use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DetailTransaksiController;
-// ✅ TAMBAHKAN BARIS INI (Controller Login yang akan kita bikin)
 use App\Http\Controllers\LoginController;
+
 
 // ==================================================
 // ✅ BAGIAN 1: HALAMAN BEBAS ACCESS (TANPA LOGIN)
@@ -44,7 +44,6 @@ Route::middleware(['login'])->group(function () {
     Route::resource('detail_transaksi', DetailTransaksiController::class);
 
 
-   // ✅ RUTE BARU KITA - AMAN, GAK BENTROK LAGI
     Route::get('/pesan-sekarang', function () {
         return view('reservasi.pesan');
     })->name('pesan.sekarang');
